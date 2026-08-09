@@ -10,18 +10,19 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Mammoth.js for DOCX parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    
     <style>
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9; 
+            background: transparent; 
         }
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1; 
-            border-radius: 4px;
+            border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8; 
@@ -31,33 +32,34 @@
         .prose h1 {
             font-size: 1.875rem;
             line-height: 2.25rem;
-            color: #1e293b; /* 恢復深色字體 */
-            background-color: transparent; /* 取消藍底 */
-            border-bottom: 4px solid #334155; /* 增加底部重點線 */
-            padding-bottom: 1rem;
-            margin-top: 2rem;
+            color: #0f172a; 
+            background-color: transparent;
+            border-bottom: 3px solid #334155; 
+            padding-bottom: 0.75rem;
+            margin-top: 1.5rem;
             margin-bottom: 1.5rem;
             text-align: center;
-            font-weight: 800;
+            font-weight: 900;
+            letter-spacing: 0.025em;
         }
         .prose h2 {
             font-size: 1.5rem;
             line-height: 2rem;
             color: #ffffff;
             background-color: #334155;
-            padding: 0.75rem 1.25rem;
+            padding: 0.6rem 1.25rem;
             margin-top: 2.5rem;
             margin-bottom: 1.25rem;
             font-weight: 700;
-            border-left: 12px solid #1e293b;
-            border-radius: 0.125rem;
+            border-left: 8px solid #0f172a;
+            border-radius: 0.25rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         .prose h3 {
             font-size: 1.25rem;
             line-height: 1.75rem;
-            color: #334155;
-            margin-top: 2rem;
+            color: #1e293b;
+            margin-top: 1.75rem;
             margin-bottom: 0.75rem;
             font-weight: 700;
             border-bottom: 2px solid #cbd5e1;
@@ -66,16 +68,19 @@
         }
         .prose p {
             margin-bottom: 1rem;
-            line-height: 1.75;
+            line-height: 1.8;
             text-align: justify;
+            color: #334155;
         }
         .prose ul {
             list-style-type: disc;
             padding-left: 1.5rem;
             margin-bottom: 1rem;
+            color: #334155;
         }
         .prose li {
             margin-bottom: 0.5rem;
+            line-height: 1.6;
         }
         .prose table {
             width: 100%;
@@ -83,259 +88,260 @@
             margin: 2rem 0;
             font-size: 0.95rem;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
         }
         .prose th {
             border: 1px solid #cbd5e1;
-            background-color: #f1f5f9;
-            color: #334155;
-            padding: 0.75rem;
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding: 0.85rem;
             font-weight: 700;
             text-align: center;
         }
         .prose td {
             border: 1px solid #e2e8f0;
-            padding: 0.75rem;
+            padding: 0.85rem;
             vertical-align: top;
+            color: #475569;
         }
         .prose strong {
             color: #1d4ed8;
             font-weight: 800;
             background-color: #eff6ff;
-            padding: 0 0.25rem;
-            border-radius: 0.125rem;
+            padding: 0.1rem 0.35rem;
+            border-radius: 0.25rem;
         }
         .prose blockquote {
             border-left: 4px solid #3b82f6;
             background-color: #f8fafc;
-            padding: 1rem;
+            padding: 1.25rem;
             margin: 1.5rem 0;
             font-style: italic;
             color: #475569;
+            border-radius: 0 0.5rem 0.5rem 0;
         }
         
         /* Animations */
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .spin-slow { animation: spin 2s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
         /* Toast Container */
         #toast-container {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 24px;
+            right: 24px;
             z-index: 100;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
         .toast {
             background: #1e293b;
             color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 14px 24px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
-            min-width: 250px;
-            animation: slideIn 0.3s ease-out forwards;
+            font-size: 0.95rem;
+            font-weight: 500;
+            min-width: 280px;
+            animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
             transform: translateX(100%);
         }
-        .toast.success { border-left: 4px solid #22c55e; }
-        .toast.info { border-left: 4px solid #3b82f6; }
-        .toast.warning { border-left: 4px solid #f59e0b; }
+        .toast.success { border-left: 5px solid #10b981; }
+        .toast.info { border-left: 5px solid #3b82f6; }
+        .toast.warning { border-left: 5px solid #f59e0b; }
         
         @keyframes slideIn {
             to { opacity: 1; transform: translateX(0); }
         }
         @keyframes fadeOut {
-            to { opacity: 0; transform: translateY(10px); }
+            to { opacity: 0; transform: translateX(20px); }
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen w-full">
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen w-full selection:bg-blue-200 selection:text-blue-900">
 
     <!-- Header -->
-    <header class="bg-slate-800 text-white shadow-lg sticky top-0 z-50">
-        <!-- 取消 max-w-7xl 限制，改為 w-full 滿版 -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50 border-b border-slate-700">
         <div class="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <img src="https://i.postimg.cc/fT2sQW09/1.png" alt="Logo" class="h-10 w-auto rounded bg-white p-1" />
+            <div class="flex items-center space-x-3 group cursor-pointer">
+                <div class="bg-white p-1.5 rounded-lg shadow-sm group-hover:shadow-md transition-shadow">
+                    <img src="https://i.postimg.cc/fT2sQW09/1.png" alt="Logo" class="h-8 w-auto object-contain" />
+                </div>
                 <div>
-                    <!-- 強制加上 text-white 防止外部樣式污染 -->
-                    <h1 class="text-xl font-bold tracking-tight text-white m-0 p-0 border-0 bg-transparent">課程大綱產生器</h1>
-                    <p class="text-xs text-slate-300 m-0">Powered by Gemini 2.5 Pro & TONY Studio</p>
+                    <h1 class="text-xl font-extrabold tracking-tight text-white m-0 p-0 border-0 bg-transparent flex items-center">
+                        課程大綱產生器 <span class="ml-2 text-[10px] bg-blue-600 text-blue-50 px-2 py-0.5 rounded-full font-medium tracking-wider">v3.7</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 m-0 mt-0.5 font-medium">Powered by Gemini 3.5 Flash & TONY Studio</p>
                 </div>
             </div>
             <!-- Navigation -->
             <div class="flex items-center space-x-3">
-                <button onclick="app.createNewProject()" class="flex items-center justify-center px-4 py-2 rounded-md transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 bg-slate-700 text-slate-100 hover:bg-slate-600 border border-slate-600 shadow-sm text-sm">
-                    <i data-lucide="plus" class="w-4 h-4 mr-2"></i> 新專案
+                <button onclick="app.createNewProject()" class="flex items-center justify-center px-4 py-2 rounded-lg transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-blue-500 bg-slate-800 text-slate-200 hover:bg-slate-700 hover:text-white border border-slate-700 shadow-sm text-sm">
+                    <i data-lucide="plus" class="w-4 h-4 mr-1.5"></i> 新專案
                 </button>
-                <button onclick="app.toggleHistory()" class="flex items-center justify-center px-4 py-2 rounded-md transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 bg-slate-700 text-slate-100 hover:bg-slate-600 border border-slate-600 shadow-sm text-sm">
-                    <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i> 歷史紀錄
+                <button onclick="app.toggleHistory()" class="flex items-center justify-center px-4 py-2 rounded-lg transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-blue-500 bg-slate-800 text-slate-200 hover:bg-slate-700 hover:text-white border border-slate-700 shadow-sm text-sm relative">
+                    <i data-lucide="history" class="w-4 h-4 mr-1.5"></i> 歷史紀錄
+                    <span id="cloud-sync-badge" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-slate-900 hidden"></span>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <!-- 取消 max-w-7xl 限制，達成滿版 -->
-    <main class="flex-1 w-full p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main class="flex-1 w-full p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 max-w-[1600px] mx-auto">
         
         <!-- Left Column: Inputs (4 cols) -->
-        <div class="lg:col-span-4 space-y-6">
+        <div class="lg:col-span-4 space-y-6 flex flex-col h-full">
             
-            <!-- API Key Section -->
-            <div id="api-key-container" class="rounded-xl shadow-sm border p-4 transition-all bg-red-50 border-red-200">
-                <h2 class="text-sm font-bold mb-3 flex items-center justify-between">
-                    <span class="flex items-center" id="api-status-text">
-                        <i data-lucide="key" class="w-4 h-4 mr-2"></i> 請先設定 API Key
-                    </span>
-                    <i id="api-status-icon" data-lucide="alert-circle" class="w-4 h-4 text-red-600"></i>
-                </h2>
-                <input type="password" id="api-key-input" class="w-full border p-2 rounded mb-2 text-sm bg-white border-red-300" placeholder="在此貼上 Google Gemini API Key">
-                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="flex items-center text-xs text-blue-600 hover:text-blue-800 font-bold mt-2">
-                    <i data-lucide="external-link" class="w-3 h-3 mr-1"></i> 點此免費獲取 API Key
-                </a>
-            </div>
-
-            <!-- Profile Card -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col items-center text-center">
-                <img src="https://i.postimg.cc/Gh8Zt7SX/S_56844323.jpg" alt="TONY" class="w-24 h-24 rounded-full border-4 border-slate-100 mb-4 object-cover" />
-                <h3 class="text-lg font-bold text-slate-800">TONY 楊文澤</h3>
-                <p class="text-sm text-blue-600 font-medium mb-2">AI 導師 | 數位行銷顧問 | 大學講師</p>
-                <p class="text-xs text-slate-500 leading-relaxed text-left w-full mt-2">
-                    「好的架構是成功的一半。」<br/>
-                    <span class="text-blue-600 font-bold">New!</span> 全滿版優化，標題格式調整為專業黑字。
-                </p>
-            </div>
-
-            <!-- Input Form -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 relative">
-                <!-- Overlay if no API key -->
-                <div id="api-overlay" class="absolute inset-0 bg-white/60 z-10 flex items-center justify-center backdrop-blur-sm rounded-xl">
-                    <p class="text-slate-800 font-bold bg-white p-3 rounded shadow-lg border">請先在上方輸入 API Key</p>
+            <!-- Profile & API Key Section (Combined for compactness) -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10 opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
+                <div class="flex items-center gap-4 mb-4">
+                    <img src="https://i.postimg.cc/Gh8Zt7SX/S_56844323.jpg" alt="TONY" class="w-16 h-16 rounded-full border-2 border-white shadow-md object-cover" />
+                    <div>
+                        <h3 class="text-base font-bold text-slate-800 flex items-center">TONY 楊文澤 <i data-lucide="badge-check" class="w-4 h-4 text-blue-500 ml-1"></i></h3>
+                        <p class="text-xs text-blue-600 font-semibold mb-1">AI 導師 | 數位行銷顧問</p>
+                        <p class="text-[11px] text-slate-500">「好的架構，是教學成功的一半。」</p>
+                    </div>
                 </div>
 
-                <h2 class="text-lg font-bold text-slate-800 mb-6 flex items-center border-b pb-3">
-                    <span class="bg-slate-800 text-white text-xs px-2 py-1 rounded mr-2 font-mono">STEP 1</span> 
+                <!-- API Key Minimal Input -->
+                <div id="api-key-container" class="rounded-xl border p-3 transition-all bg-red-50 border-red-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="api-key-input" class="text-xs font-bold flex items-center cursor-pointer" id="api-status-text">
+                            <i data-lucide="key" class="w-3.5 h-3.5 mr-1.5"></i> 需設定 API Key
+                        </label>
+                        <i id="api-status-icon" data-lucide="alert-circle" class="w-4 h-4 text-red-600"></i>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="password" id="api-key-input" class="flex-1 border p-1.5 rounded-lg text-xs bg-white border-red-300 focus:ring-2 focus:ring-red-200 focus:outline-none transition-shadow" placeholder="貼上 Gemini API Key">
+                    </div>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-[10px] text-red-600 hover:text-red-800 font-bold mt-1.5 ml-1">
+                        獲取免費 Key <i data-lucide="external-link" class="w-2.5 h-2.5 ml-0.5"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Input Form -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 relative flex-1 flex flex-col">
+                <!-- Overlay if no API key -->
+                <div id="api-overlay" class="absolute inset-0 bg-white/70 z-10 flex items-center justify-center backdrop-blur-[2px] rounded-2xl transition-opacity duration-300">
+                    <div class="bg-white p-4 rounded-xl shadow-xl border border-slate-100 text-center flex flex-col items-center">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-3">
+                            <i data-lucide="lock" class="w-6 h-6 text-red-500"></i>
+                        </div>
+                        <p class="text-slate-800 font-bold text-sm">解鎖大綱生成器</p>
+                        <p class="text-xs text-slate-500 mt-1">請先於上方輸入您的 API Key</p>
+                    </div>
+                </div>
+
+                <h2 class="text-base font-bold text-slate-800 mb-5 flex items-center border-b border-slate-100 pb-3">
+                    <span class="bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded mr-2 font-mono tracking-wider">STEP 1</span> 
                     定義課程參數
                 </h2>
 
-                <!-- Situation -->
-                <div class="mb-5 group">
-                    <label class="text-sm font-bold text-slate-700 flex items-center mb-2 group-hover:text-blue-700 transition-colors">
-                        <i data-lucide="layout" class="w-4 h-4 mr-2 text-slate-400 group-hover:text-blue-600"></i> 上課情境
-                    </label>
-                    <select id="input-situation" class="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2.5 bg-slate-50 hover:bg-white transition-colors"></select>
-                    <!-- Custom Input (Hidden by default) -->
-                    <input type="text" id="input-situation-custom" class="w-full mt-2 rounded-md border-blue-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2.5 bg-blue-50 transition-colors hidden" placeholder="請輸入自訂上課情境">
-                </div>
+                <div class="space-y-4 flex-1 overflow-y-auto pr-1 custom-scrollbar">
+                    <!-- Basic Params Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Situation -->
+                        <div class="group">
+                            <label class="text-xs font-bold text-slate-600 flex items-center mb-1.5 group-hover:text-blue-600 transition-colors">
+                                <i data-lucide="layout-template" class="w-3.5 h-3.5 mr-1.5 text-slate-400 group-hover:text-blue-500"></i> 授課情境
+                            </label>
+                            <select id="input-situation" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 text-sm bg-slate-50 hover:bg-white transition-colors cursor-pointer appearance-none"></select>
+                            <input type="text" id="input-situation-custom" class="w-full mt-2 rounded-lg border-blue-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 text-sm bg-blue-50 transition-colors hidden" placeholder="自訂情境...">
+                        </div>
 
-                <!-- Audience -->
-                <div class="mb-5 group">
-                    <label class="text-sm font-bold text-slate-700 flex items-center mb-2 group-hover:text-blue-700 transition-colors">
-                        <i data-lucide="users" class="w-4 h-4 mr-2 text-slate-400 group-hover:text-blue-600"></i> 目標對象
-                    </label>
-                    <select id="input-audience" class="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2.5 bg-slate-50 hover:bg-white transition-colors"></select>
-                    <!-- Custom Input (Hidden by default) -->
-                    <input type="text" id="input-audience-custom" class="w-full mt-2 rounded-md border-blue-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2.5 bg-blue-50 transition-colors hidden" placeholder="請輸入自訂目標對象">
-                </div>
-
-                <!-- Duration -->
-                <div class="mb-5 group">
-                    <label class="text-sm font-bold text-slate-700 flex items-center mb-2 group-hover:text-blue-700 transition-colors">
-                        <i data-lucide="clock" class="w-4 h-4 mr-2 text-slate-400 group-hover:text-blue-600"></i> 時段模組
-                    </label>
-                    <select id="input-duration" class="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2.5 bg-slate-50 hover:bg-white transition-colors"></select>
-                    <!-- Custom Input (Hidden by default) -->
-                    <input type="text" id="input-duration-custom" class="w-full mt-2 rounded-md border-blue-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2.5 bg-blue-50 transition-colors hidden" placeholder="請輸入自訂時段模組">
-                </div>
-
-                <!-- Topic & Brainstorming -->
-                <div class="mb-5 group relative">
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="text-sm font-bold text-blue-800 flex items-center group-hover:text-blue-900 transition-colors">
-                            <i data-lucide="book-open" class="w-4 h-4 mr-2 text-blue-600 group-hover:text-blue-700"></i> 核心課程主題
-                        </label>
-                        <button id="btn-brainstorm" onclick="app.callGeminiAPI('brainstorm')" class="text-xs flex items-center bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200 transition-colors disabled:opacity-50" title="輸入關鍵字，讓 AI 幫您想標題">
-                            <i data-lucide="sparkles" class="w-3 h-3 mr-1"></i> <span>AI 靈感發想</span>
-                        </button>
-                    </div>
-                    <textarea id="input-topic" class="w-full rounded-md border-blue-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-3 h-20 bg-blue-50 hover:bg-blue-100 transition-colors text-base text-blue-900 placeholder-blue-400" placeholder="輸入關鍵字 (如：AI 行銷)，再點擊右上角「AI 靈感發想」..."></textarea>
-                    
-                    <!-- Brainstorm Suggestions -->
-                    <div id="suggestions-container" class="mt-3 bg-purple-50 p-3 rounded-lg border border-purple-100 hidden fade-in">
-                        <h4 class="text-xs font-bold text-purple-800 mb-2 flex items-center">
-                            <i data-lucide="lightbulb" class="w-3 h-3 mr-1"></i> 點擊標題即可套用：
-                        </h4>
-                        <div id="suggestions-list" class="space-y-2">
-                            <!-- Items populated by JS -->
+                        <!-- Audience -->
+                        <div class="group">
+                            <label class="text-xs font-bold text-slate-600 flex items-center mb-1.5 group-hover:text-blue-600 transition-colors">
+                                <i data-lucide="users" class="w-3.5 h-3.5 mr-1.5 text-slate-400 group-hover:text-blue-500"></i> 目標對象
+                            </label>
+                            <select id="input-audience" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 text-sm bg-slate-50 hover:bg-white transition-colors cursor-pointer appearance-none"></select>
+                            <input type="text" id="input-audience-custom" class="w-full mt-2 rounded-lg border-blue-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 text-sm bg-blue-50 transition-colors hidden" placeholder="自訂對象...">
                         </div>
                     </div>
-                </div>
 
-                <!-- Supplement & File Upload -->
-                <div class="mb-5 group">
-                    <label class="text-sm font-bold text-slate-700 flex items-center mb-2 group-hover:text-blue-700 transition-colors">
-                        <i data-lucide="pen-tool" class="w-4 h-4 mr-2 text-slate-400 group-hover:text-blue-600"></i> 課程背景與特色補充 (選填)
-                    </label>
-                    <textarea id="input-supplement" class="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-3 h-20 bg-slate-50 hover:bg-white transition-colors text-sm mb-3" placeholder="例如：龍華科大數商系大三學生，希望加強 AI 實作..."></textarea>
-                    
-                    <!-- File Upload Area -->
-                    <div class="border border-dashed border-slate-300 rounded-md p-3 bg-slate-50 hover:bg-slate-100 transition-colors">
-                        <div class="flex items-center justify-between flex-wrap gap-2">
-                            <span class="text-xs text-slate-500 flex items-center"><i data-lucide="paperclip" class="w-3 h-3 mr-1"></i> 參考資料 (Word, PDF, TXT, 圖片, 音訊)</span>
-                            <label class="cursor-pointer bg-white border border-slate-300 text-slate-700 text-xs px-3 py-1.5 rounded hover:bg-slate-50 transition-colors shadow-sm inline-flex items-center">
-                                <i data-lucide="upload" class="w-3 h-3 mr-1"></i> 上傳檔案
+                    <!-- Duration -->
+                    <div class="group">
+                        <label class="text-xs font-bold text-slate-600 flex items-center mb-1.5 group-hover:text-blue-600 transition-colors">
+                            <i data-lucide="clock" class="w-3.5 h-3.5 mr-1.5 text-slate-400 group-hover:text-blue-500"></i> 時段模組
+                        </label>
+                        <select id="input-duration" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 text-sm bg-slate-50 hover:bg-white transition-colors cursor-pointer appearance-none"></select>
+                        <input type="text" id="input-duration-custom" class="w-full mt-2 rounded-lg border-blue-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 text-sm bg-blue-50 transition-colors hidden" placeholder="自訂時段...">
+                    </div>
+
+                    <!-- Topic & Brainstorming -->
+                    <div class="group relative bg-blue-50/50 p-3 rounded-xl border border-blue-100">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-sm font-bold text-blue-800 flex items-center">
+                                <i data-lucide="target" class="w-4 h-4 mr-1.5 text-blue-600"></i> 核心主題
+                            </label>
+                            <button id="btn-brainstorm" onclick="app.callGeminiAPI('brainstorm')" class="text-[10px] font-bold flex items-center bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-2.5 py-1.5 rounded-md hover:shadow-md hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:transform-none" title="讓 AI 幫您發想吸睛標題">
+                                <i data-lucide="sparkles" class="w-3 h-3 mr-1"></i> <span>AI 靈感發想</span>
+                            </button>
+                        </div>
+                        <textarea id="input-topic" class="w-full rounded-lg border-blue-200 shadow-inner focus:border-blue-500 focus:ring-blue-500 border p-3 h-20 bg-white transition-colors text-sm text-slate-800 placeholder-slate-300 resize-none" placeholder="輸入核心關鍵字 (例如：AI 行銷應用)，再點擊右上角發想標題..."></textarea>
+                        
+                        <!-- Brainstorm Suggestions -->
+                        <div id="suggestions-container" class="mt-3 hidden fade-in">
+                            <p class="text-[10px] font-bold text-slate-500 mb-2 flex items-center">
+                                <i data-lucide="corner-down-right" class="w-3 h-3 mr-1"></i> 點擊下方標題直接套用：
+                            </p>
+                            <div id="suggestions-list" class="flex flex-wrap gap-2">
+                                <!-- Items populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Supplement & File Upload -->
+                    <div class="group">
+                        <label class="text-xs font-bold text-slate-600 flex items-center mb-1.5 group-hover:text-blue-600 transition-colors">
+                            <i data-lucide="paperclip" class="w-3.5 h-3.5 mr-1.5 text-slate-400 group-hover:text-blue-500"></i> 參考資料與補充說明 (選填)
+                        </label>
+                        <textarea id="input-supplement" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-3 h-16 bg-slate-50 hover:bg-white transition-colors text-sm mb-2 resize-none" placeholder="例如：針對企業內訓，希望強調實作案例..."></textarea>
+                        
+                        <!-- Enhanced File Upload Area -->
+                        <div class="border-2 border-dashed border-slate-200 rounded-lg p-3 bg-slate-50/50 hover:bg-slate-50 transition-colors flex flex-col items-center justify-center group/upload relative">
+                            <label class="cursor-pointer text-center w-full">
+                                <div class="w-8 h-8 bg-white border border-slate-200 rounded-full flex items-center justify-center mx-auto mb-2 shadow-sm group-hover/upload:border-blue-300 group-hover/upload:text-blue-500 transition-colors">
+                                    <i data-lucide="upload-cloud" class="w-4 h-4 text-slate-500 group-hover/upload:text-blue-500"></i>
+                                </div>
+                                <span class="text-xs font-medium text-slate-600 block">點擊上傳參考附件</span>
+                                <span class="text-[10px] text-slate-400 mt-1 block">支援 Word, PDF, TXT, 圖片 (上限 5MB)</span>
                                 <input type="file" id="input-file-upload" class="hidden" accept=".pdf,.docx,.txt,text/plain,image/*,audio/*" multiple onchange="app.handleFileUpload(event)">
                             </label>
                         </div>
                         <!-- File List -->
-                        <div id="file-list" class="mt-3 space-y-1.5 hidden">
+                        <div id="file-list" class="mt-2 space-y-1.5 hidden">
                             <!-- Populated by JS -->
                         </div>
                     </div>
                 </div>
 
                 <!-- Generate Button -->
-                <button id="btn-generate" onclick="app.callGeminiAPI('initial')" class="w-full mt-4 flex items-center justify-center px-4 py-3 rounded-md transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 bg-slate-800 text-white hover:bg-slate-700 shadow-lg shadow-slate-200 text-lg disabled:opacity-50 disabled:cursor-not-allowed group">
-                    <i data-lucide="play" class="w-5 h-5 mr-2 group-disabled:hidden"></i> 
+                <button id="btn-generate" onclick="app.callGeminiAPI('initial')" class="w-full mt-5 flex items-center justify-center px-4 py-3.5 rounded-xl transition-all duration-300 font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-lg shadow-blue-200/50 text-base disabled:opacity-60 disabled:cursor-not-allowed hover:-translate-y-0.5 group">
+                    <i data-lucide="zap" class="w-5 h-5 mr-2 group-disabled:hidden text-yellow-300"></i> 
                     <i data-lucide="loader-2" class="w-5 h-5 mr-2 animate-spin hidden group-disabled:block"></i>
-                    <span class="btn-text">Step 2: 生成初稿</span>
+                    <span class="btn-text tracking-wide">Step 2: 生成專業大綱</span>
                 </button>
-                
-                <p id="error-msg" class="text-red-500 text-sm mt-2 font-bold bg-red-50 p-2 rounded text-center hidden"></p>
             </div>
 
-            <!-- Refinement Section -->
-            <div id="refinement-section" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 fade-in ring-2 ring-blue-100 hidden">
-                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center border-b pb-2">
-                    <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2 font-mono">STEP 3</span> 
-                    迭代修正
+            <!-- Refinement Section (Hidden initially) -->
+            <div id="refinement-section" class="bg-white rounded-2xl shadow-sm border border-blue-100 p-5 fade-in ring-1 ring-blue-50 hidden relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-2 h-full bg-blue-500"></div>
+                <h2 class="text-sm font-bold text-slate-800 mb-3 flex items-center">
+                    <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded mr-2 font-mono tracking-wider">STEP 3</span> 
+                    迭代與修正
                 </h2>
-                <textarea id="input-refine" class="w-full rounded-md border-blue-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-3 h-32 mb-4 bg-blue-50 placeholder-blue-300" placeholder="例如：請增加更多實作案例，或參考下方新上傳的資料..."></textarea>
+                <textarea id="input-refine" class="w-full rounded-lg border-slate-200 shadow-inner focus:border-blue-500 focus:ring-blue-500 border p-3 h-24 mb-3 bg-slate-50 text-sm resize-none placeholder-slate-400" placeholder="對目前的大綱不滿意？告訴 AI 怎麼修改... (例如：將第二單元改為實作)"></textarea>
                 
-                <!-- Refinement File Upload Area -->
-                <div class="border border-dashed border-blue-300 rounded-md p-3 bg-blue-50/50 hover:bg-blue-50 transition-colors mb-4">
-                    <div class="flex items-center justify-between flex-wrap gap-2">
-                        <span class="text-xs text-blue-700 flex items-center"><i data-lucide="paperclip" class="w-3 h-3 mr-1"></i> 補充參考資料 (Word, PDF, TXT, 圖片, 音訊)</span>
-                        <label class="cursor-pointer bg-white border border-blue-300 text-blue-700 text-xs px-3 py-1.5 rounded hover:bg-blue-50 transition-colors shadow-sm inline-flex items-center">
-                            <i data-lucide="upload" class="w-3 h-3 mr-1"></i> 上傳檔案
-                            <input type="file" id="input-file-upload-refine" class="hidden" accept=".pdf,.docx,.txt,text/plain,image/*,audio/*" multiple onchange="app.handleFileUpload(event)">
-                        </label>
-                    </div>
-                    <!-- Refinement File List -->
-                    <div id="file-list-refine" class="mt-3 space-y-1.5 hidden">
-                        <!-- Populated by JS -->
-                    </div>
-                </div>
-
-                <button id="btn-refine" onclick="app.callGeminiAPI('refine')" class="w-full flex items-center justify-center px-4 py-2 rounded-md transition-all duration-200 font-medium bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-200 disabled:opacity-50 group">
+                <button id="btn-refine" onclick="app.callGeminiAPI('refine')" class="w-full flex items-center justify-center px-4 py-2.5 rounded-lg transition-all duration-200 font-bold bg-slate-800 text-white hover:bg-slate-700 shadow-md disabled:opacity-50 group text-sm">
                     <i data-lucide="refresh-cw" class="w-4 h-4 mr-2 group-disabled:hidden"></i> 
                     <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin hidden group-disabled:block"></i>
                     <span class="btn-text">Step 4: 執行修正</span>
@@ -344,97 +350,108 @@
         </div>
 
         <!-- Right Column: Output (8 cols) -->
-        <div class="lg:col-span-8 flex flex-col h-full">
-            <div class="bg-white rounded-xl shadow-lg border border-slate-200 flex-1 flex flex-col overflow-hidden h-[calc(100vh-8rem)]">
+        <div class="lg:col-span-8 flex flex-col h-full min-h-[600px] lg:min-h-0">
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-200 flex-1 flex flex-col overflow-hidden relative">
                 
                 <!-- Toolbar -->
-                <div class="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center shadow-sm z-10 flex-wrap gap-2">
-                    <h3 class="font-bold text-slate-700 flex items-center">
-                        <i data-lucide="file-text" class="w-5 h-5 mr-2 text-blue-600"></i> 大綱預覽
+                <div class="bg-white border-b border-slate-200 p-3 sm:p-4 flex justify-between items-center z-10 flex-wrap gap-3 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] relative">
+                    <h3 class="font-bold text-slate-800 flex items-center text-sm sm:text-base">
+                        <i data-lucide="file-check-2" class="w-5 h-5 mr-2 text-blue-600"></i> 大綱預覽
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
                         <!-- AI Tools Container -->
-                        <div id="ai-tools-controls" class="flex items-center space-x-1 border-r border-slate-200 pr-2 mr-1">
-                             <button id="btn-translate" onclick="app.callGeminiAPI('translate')" class="text-xs flex items-center justify-center px-2 py-1.5 rounded-md border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-blue-600 disabled:opacity-50 group transition-all" title="將當前內容翻譯為英文">
-                                <i data-lucide="globe" class="w-4 h-4 mr-1 group-disabled:hidden"></i>
-                                <span class="btn-text">翻譯英文</span>
+                        <div id="ai-tools-controls" class="flex items-center space-x-1.5 border-r border-slate-200 pr-3 mr-1">
+                             <button id="btn-translate" onclick="app.callGeminiAPI('translate')" class="text-xs flex items-center justify-center px-2.5 py-1.5 rounded-md border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-blue-600 hover:border-blue-200 disabled:opacity-50 disabled:hover:bg-white transition-all" title="翻譯為英文">
+                                <i data-lucide="languages" class="w-3.5 h-3.5 mr-1 group-disabled:hidden"></i>
+                                <span class="btn-text hidden sm:inline">雙語</span>
                             </button>
                             
-                            <button id="btn-promo" onclick="app.callGeminiAPI('promo')" class="text-xs flex items-center justify-center px-2 py-1.5 rounded-md border border-indigo-200 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 disabled:opacity-50 group transition-all" title="生成宣傳精簡版 (DM用)">
-                                <i data-lucide="megaphone" class="w-4 h-4 mr-1 group-disabled:hidden"></i>
-                                <span class="btn-text">宣傳精簡版</span>
+                            <button id="btn-promo" onclick="app.callGeminiAPI('promo')" class="text-xs flex items-center justify-center px-2.5 py-1.5 rounded-md border border-indigo-200 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 disabled:opacity-50 transition-all" title="生成宣傳文案">
+                                <i data-lucide="megaphone" class="w-3.5 h-3.5 mr-1 group-disabled:hidden"></i>
+                                <span class="btn-text hidden sm:inline">宣傳版</span>
                             </button>
 
-                            <button id="btn-social" onclick="app.callGeminiAPI('social')" class="text-xs flex items-center justify-center px-2 py-1.5 rounded-md border border-pink-200 bg-pink-50 text-pink-700 hover:bg-pink-100 disabled:opacity-50 group transition-all" title="生成社群貼文版 (FB/IG)">
-                                <i data-lucide="share-2" class="w-4 h-4 mr-1 group-disabled:hidden"></i>
-                                <span class="btn-text">社群貼文</span>
+                            <button id="btn-social" onclick="app.callGeminiAPI('social')" class="text-xs flex items-center justify-center px-2.5 py-1.5 rounded-md border border-pink-200 bg-pink-50 text-pink-700 hover:bg-pink-100 disabled:opacity-50 transition-all" title="生成社群貼文">
+                                <i data-lucide="smartphone" class="w-3.5 h-3.5 mr-1 group-disabled:hidden"></i>
+                                <span class="btn-text hidden sm:inline">社群版</span>
                             </button>
                         </div>
-                       
+                        
                         <!-- File Operations -->
                         <div class="flex items-center space-x-2">
-                            <button id="btn-save" onclick="app.saveProject()" class="text-xs flex items-center justify-center px-3 py-1.5 rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 group transition-all">
-                                <i data-lucide="save" class="w-4 h-4 mr-2"></i> <span>儲存</span>
+                            <!-- 新增複製按鈕 -->
+                            <button id="btn-copy" onclick="app.copyContent()" class="text-xs flex items-center justify-center px-3 py-1.5 rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all disabled:opacity-50" disabled>
+                                <i data-lucide="copy" class="w-3.5 h-3.5 mr-1.5"></i> <span class="hidden sm:inline">複製</span>
+                            </button>
+                            <button id="btn-save" onclick="app.saveProject()" class="text-xs flex items-center justify-center px-3 py-1.5 rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all disabled:opacity-50">
+                                <i data-lucide="cloud-upload" class="w-3.5 h-3.5 mr-1.5"></i> <span class="hidden sm:inline">儲存</span>
                             </button>
                             <button id="btn-export" onclick="app.exportToWord()" class="text-xs flex items-center justify-center px-3 py-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700 shadow-sm disabled:opacity-50 transition-all">
-                                <i data-lucide="download" class="w-4 h-4 mr-2"></i> 匯出 DOCX
+                                <i data-lucide="file-down" class="w-3.5 h-3.5 sm:mr-1.5"></i> <span class="hidden sm:inline">匯出 DOCX</span>
                             </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Preview Area -->
-                <div id="preview-container" class="flex-1 overflow-y-auto p-4 sm:p-6 bg-white scroll-smooth relative">
+                <div id="preview-container" class="flex-1 overflow-y-auto p-5 sm:p-8 lg:p-12 bg-white relative custom-scrollbar">
                     <!-- Default Placeholder -->
-                    <div id="preview-placeholder" class="h-full flex flex-col items-center justify-center text-slate-300">
-                        <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                            <i data-lucide="layout" class="w-12 h-12 opacity-40"></i>
+                    <div id="preview-placeholder" class="h-full flex flex-col items-center justify-center text-slate-300 transition-opacity">
+                        <div class="relative w-32 h-32 mb-6 flex justify-center items-center">
+                            <div class="absolute inset-0 bg-blue-50 rounded-full animate-pulse opacity-50"></div>
+                            <i data-lucide="layout-dashboard" class="w-16 h-16 text-blue-200 relative z-10"></i>
                         </div>
-                        <p class="text-lg font-medium text-slate-500">尚未生成內容</p>
-                        <p class="text-sm mt-2">請先設定參數、附件，再點擊生成初稿。</p>
+                        <p class="text-xl font-bold text-slate-400">大綱預覽區</p>
+                        <p class="text-sm mt-2 text-slate-400 max-w-xs text-center">設定左側參數並點擊生成，您的專業課程架構將會顯示於此。</p>
                     </div>
                     
                     <!-- Content -->
-                    <!-- 解除 max-w-3xl 限制，改為 w-full max-w-none 滿版 -->
-                    <div id="preview-content" class="w-full max-w-none prose hidden"></div>
+                    <div id="preview-content" class="w-full max-w-none prose hidden mx-auto pb-16"></div>
                     
-                    <!-- Restore Banner -->
-                    <div id="restore-banner" class="hidden sticky bottom-4 mx-auto max-w-md bg-slate-800 text-white p-3 rounded-full shadow-lg flex justify-between items-center z-20 cursor-pointer hover:bg-slate-700 transition-all" onclick="app.restoreOriginal()">
-                        <div class="flex items-center px-2">
-                            <i data-lucide="info" class="w-4 h-4 mr-2 text-blue-300"></i>
-                            <span class="text-sm">您正在檢視衍生版本</span>
-                        </div>
-                        <button class="bg-white text-slate-800 text-xs font-bold px-3 py-1.5 rounded-full flex items-center">
-                            <i data-lucide="rotate-ccw" class="w-3 h-3 mr-1"></i> 還原回完整大綱
-                        </button>
-                    </div>
-
-                    <div id="preview-footer" class="mt-12 pt-8 border-t border-slate-100 text-center text-slate-400 text-sm hidden">
+                    <div id="preview-footer" class="mt-16 pt-8 border-t border-slate-100 text-center text-slate-300 text-xs font-medium tracking-widest hidden">
                          — TONY STUDIO PROFESSIONAL COURSE PLAN —
                     </div>
+                </div>
+
+                <!-- Restore Banner (Floating inside preview) -->
+                <div id="restore-banner" class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white p-2.5 rounded-full shadow-2xl z-20 cursor-pointer hover:bg-slate-800 transition-all hidden items-center gap-3 border border-slate-700 backdrop-blur-sm bg-opacity-90" onclick="app.restoreOriginal()">
+                    <div class="flex items-center pl-3">
+                        <i data-lucide="eye" class="w-4 h-4 mr-2 text-blue-400"></i>
+                        <span class="text-xs font-medium">檢視衍生版本中</span>
+                    </div>
+                    <button class="bg-white text-slate-900 text-xs font-bold px-4 py-1.5 rounded-full flex items-center hover:bg-slate-100 transition-colors">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 mr-1.5"></i> 還原大綱
+                    </button>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-800 text-slate-400 py-6 mt-auto">
-        <div class="w-full px-4 text-center text-sm">
+    <footer class="bg-white border-t border-slate-200 py-6 mt-auto">
+        <div class="w-full px-4 text-center text-xs text-slate-500 font-medium">
             <p>© 2026 TONY STUDIO. 本教材由 TONY STUDIO 楊文澤顧問設計. All Rights Reserved.</p>
         </div>
     </footer>
 
     <!-- History Drawer -->
-    <div id="history-drawer" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end transition-opacity duration-300 hidden">
-        <div class="bg-white w-full max-w-sm h-full shadow-2xl p-6 overflow-y-auto transform transition-transform duration-300">
-            <div class="flex justify-between items-center mb-6 border-b pb-4">
-                <h3 class="text-xl font-bold flex items-center"><i data-lucide="refresh-cw" class="w-5 h-5 mr-2"></i> 歷史專案</h3>
-                <button onclick="app.toggleHistory()" class="text-slate-500 hover:text-slate-800 text-xl font-bold">✕</button>
+    <div id="history-drawer" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex justify-end transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div id="history-panel" class="bg-slate-50 w-full max-w-md h-full shadow-2xl p-0 overflow-hidden flex flex-col transform translate-x-full transition-transform duration-300 ease-out border-l border-slate-200">
+            <div class="flex justify-between items-center p-6 bg-white border-b border-slate-200 z-10 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center">
+                    <i data-lucide="cloud-snow" class="w-5 h-5 mr-2 text-blue-600"></i> 雲端專案庫
+                </h3>
+                <button onclick="app.toggleHistory(false)" class="text-slate-400 hover:text-slate-700 p-2 rounded-full hover:bg-slate-100 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
-            <div id="history-list" class="space-y-3">
-                <!-- Projects -->
+            <div id="history-list" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+                <!-- Projects List -->
             </div>
-            <p id="history-empty" class="text-slate-500 text-center mt-10 hidden">尚無儲存的專案</p>
+            <div id="history-empty" class="hidden flex-1 flex-col items-center justify-center p-6 text-slate-400">
+                <i data-lucide="inbox" class="w-12 h-12 mb-4 opacity-50"></i>
+                <p class="text-sm font-medium">雲端尚無儲存的專案</p>
+            </div>
         </div>
     </div>
 
@@ -442,7 +459,27 @@
     <div id="toast-container"></div>
 
     <!-- Application Logic -->
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Firebase Setup ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAgWGQDU5tadTDTIITG534l_LVjcCtwjgo",
+            authDomain: "d30-tony-test.firebaseapp.com",
+            projectId: "d30-tony-test",
+            storageBucket: "d30-tony-test.firebasestorage.app",
+            messagingSenderId: "312782813232",
+            appId: "1:312782813232:web:499d448e0c5c45911ed5f5",
+            measurementId: "G-2F2PWZE230"
+        };
+        const firebaseApp = initializeApp(firebaseConfig);
+        const auth = getAuth(firebaseApp);
+        const db = getFirestore(firebaseApp);
+        const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'tony-course-generator';
+        let currentUserId = null;
+
         // --- Configuration ---
         const OPTIONS = {
             situations: ["演講", "企業內訓", "公開班工作坊", "學術課程 (大學/碩士)", "線上直播課程", "其他 (請自行輸入)"],
@@ -458,22 +495,17 @@
                 id: null,
                 name: '未命名課程',
                 inputs: { 
-                    situation: OPTIONS.situations[0],
-                    situationCustom: '',
-                    audience: OPTIONS.audiences[0],
-                    audienceCustom: '',
-                    duration: OPTIONS.durations[0],
-                    durationCustom: '',
-                    topic: '',
-                    backgroundSupplement: '',
-                    attachedFiles: [] // Elements: { name, type, data, textContent }
+                    situation: OPTIONS.situations[0], situationCustom: '',
+                    audience: OPTIONS.audiences[0], audienceCustom: '',
+                    duration: OPTIONS.durations[0], durationCustom: '',
+                    topic: '', backgroundSupplement: '', attachedFiles: [] 
                 },
                 generatedContent: '',
                 refinementPrompt: '',
                 history: []
             },
-            originalContent: null, // Stores original content when viewing alternate versions (EN, Promo, Social)
-            viewMode: 'original', // 'original', 'translate', 'promo', 'social'
+            originalContent: null,
+            viewMode: 'original', 
             loading: false,
             brainstorming: false,
             suggestedTitles: []
@@ -482,30 +514,37 @@
         // --- Helpers ---
         const generateId = () => Math.random().toString(36).substr(2, 9);
 
-        // --- Toast System ---
+        const formatBytes = (bytes, decimals = 1) => {
+            if (!+bytes) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+        };
+
         const showToast = (message, type = 'info') => {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             
             let iconName = 'info';
-            if (type === 'success') iconName = 'check-circle';
+            if (type === 'success') iconName = 'check-circle-2';
             if (type === 'warning') iconName = 'alert-triangle';
 
             toast.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5 mr-3"></i><span>${message}</span>`;
-            
             container.appendChild(toast);
             lucide.createIcons();
 
             setTimeout(() => {
-                toast.style.animation = 'fadeOut 0.3s ease-in forwards';
+                toast.style.animation = 'fadeOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards';
                 toast.addEventListener('animationend', () => toast.remove());
-            }, 3500);
+            }, 3000);
         };
 
         // --- App Object ---
         const app = {
-            init: () => {
+            init: async () => {
                 lucide.createIcons();
                 
                 const storedKey = localStorage.getItem('gemini_api_key');
@@ -515,32 +554,62 @@
                     app.updateApiStatus(true);
                 }
 
-                const storedProjects = localStorage.getItem('course_projects');
-                if (storedProjects) {
-                    appState.projects = JSON.parse(storedProjects);
-                }
-
                 app.populateSelect('input-situation', OPTIONS.situations);
                 app.populateSelect('input-audience', OPTIONS.audiences);
                 app.populateSelect('input-duration', OPTIONS.durations);
 
                 app.createNewProject(false);
 
-                // API Key Listener
+                // --- 雲端身份驗證與資料同步 ---
+                try {
+                    const userCredential = await signInAnonymously(auth);
+                    currentUserId = userCredential.user.uid;
+                    document.getElementById('cloud-sync-badge').classList.remove('hidden'); // Show sync indicator
+                    
+                    const storedProjects = localStorage.getItem('course_projects');
+                    if (storedProjects) {
+                        try {
+                            const localProjects = JSON.parse(storedProjects);
+                            for (const p of localProjects) {
+                                const sanitizedFiles = (p.inputs.attachedFiles || []).map(f => ({ name: f.name, type: f.type, sizeStr: f.sizeStr }));
+                                p.inputs.attachedFiles = sanitizedFiles;
+                                const docRef = doc(db, 'artifacts', APP_ID, 'users', currentUserId, 'projects', p.id);
+                                await setDoc(docRef, p);
+                            }
+                            localStorage.removeItem('course_projects'); 
+                        } catch (e) {
+                            console.error("資料轉移失敗:", e);
+                        }
+                    }
+
+                    const projectsRef = collection(db, 'artifacts', APP_ID, 'users', currentUserId, 'projects');
+                    onSnapshot(projectsRef, (snapshot) => {
+                        appState.projects = [];
+                        snapshot.forEach(doc => appState.projects.push(doc.data()));
+                        appState.projects.sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified));
+                        app.renderHistoryList();
+                    }, (error) => {
+                        console.error("雲端同步錯誤:", error);
+                        document.getElementById('cloud-sync-badge').classList.add('hidden');
+                    });
+
+                } catch (error) {
+                    console.error("登入錯誤:", error);
+                    showToast("雲端連線失敗，專案暫時無法跨裝置同步", "warning");
+                }
+
                 document.getElementById('api-key-input').addEventListener('input', (e) => {
                     appState.apiKey = e.target.value;
                     localStorage.setItem('gemini_api_key', e.target.value);
                     app.updateApiStatus(!!e.target.value);
                 });
 
-                // Standard Inputs Listeners
                 ['situation', 'audience', 'duration'].forEach(field => {
                     const el = document.getElementById(`input-${field}`);
                     el.addEventListener('change', (e) => {
                         appState.currentProject.inputs[field] = e.target.value;
                         app.updateUI();
                     });
-                    
                     const customEl = document.getElementById(`input-${field}-custom`);
                     customEl.addEventListener('input', (e) => {
                         appState.currentProject.inputs[`${field}Custom`] = e.target.value;
@@ -572,28 +641,42 @@
                 const input = document.getElementById('api-key-input');
 
                 if (hasKey) {
-                    container.className = "rounded-xl shadow-sm border p-4 transition-all bg-green-50 border-green-200";
-                    text.innerHTML = '<i data-lucide="key" class="w-4 h-4 mr-2"></i> API 已連線';
-                    icon.outerHTML = '<i id="api-status-icon" data-lucide="check-circle" class="w-4 h-4 text-green-600"></i>';
-                    input.className = "w-full border p-2 rounded mb-2 text-sm bg-white border-green-300";
-                    overlay.classList.add('hidden');
+                    container.className = "rounded-xl border p-2.5 transition-all bg-green-50/50 border-green-200 group-hover:border-green-300";
+                    text.innerHTML = '<i data-lucide="check-circle-2" class="w-3.5 h-3.5 mr-1.5 text-green-600"></i> API 已連線';
+                    text.classList.add('text-green-700');
+                    icon.classList.add('hidden');
+                    input.parentElement.classList.add('hidden'); // Hide input to save space if filled
+                    
+                    // Allow clicking to reveal input again
+                    text.onclick = () => {
+                        input.parentElement.classList.toggle('hidden');
+                        input.focus();
+                    };
+                    
+                    if(overlay) overlay.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => overlay && overlay.classList.add('hidden'), 300);
                 } else {
-                    container.className = "rounded-xl shadow-sm border p-4 transition-all bg-red-50 border-red-200";
-                    text.innerHTML = '<i data-lucide="key" class="w-4 h-4 mr-2"></i> 請先設定 API Key';
-                    icon.outerHTML = '<i id="api-status-icon" data-lucide="alert-circle" class="w-4 h-4 text-red-600"></i>';
-                    input.className = "w-full border p-2 rounded mb-2 text-sm bg-white border-red-300";
-                    overlay.classList.remove('hidden');
+                    container.className = "rounded-xl border p-3 transition-all bg-red-50 border-red-200";
+                    text.innerHTML = '<i data-lucide="key" class="w-3.5 h-3.5 mr-1.5"></i> 需設定 API Key';
+                    text.classList.remove('text-green-700');
+                    text.onclick = null;
+                    icon.classList.remove('hidden');
+                    icon.outerHTML = '<i id="api-status-icon" data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i>';
+                    input.parentElement.classList.remove('hidden');
+                    
+                    if(overlay) {
+                        overlay.classList.remove('hidden');
+                        setTimeout(() => overlay.classList.remove('opacity-0', 'pointer-events-none'), 10);
+                    }
                 }
                 lucide.createIcons();
             },
 
             updateUI: () => {
-                // Sync Select Values
                 document.getElementById('input-situation').value = appState.currentProject.inputs.situation;
                 document.getElementById('input-audience').value = appState.currentProject.inputs.audience;
                 document.getElementById('input-duration').value = appState.currentProject.inputs.duration;
                 
-                // Sync Custom Inputs Values & Visibility
                 ['situation', 'audience', 'duration'].forEach(field => {
                     const customInput = document.getElementById(`input-${field}-custom`);
                     customInput.value = appState.currentProject.inputs[`${field}Custom`] || '';
@@ -604,25 +687,23 @@
                     }
                 });
 
-                // Sync Textareas
                 document.getElementById('input-topic').value = appState.currentProject.inputs.topic;
                 document.getElementById('input-supplement').value = appState.currentProject.inputs.backgroundSupplement;
                 document.getElementById('input-refine').value = appState.currentProject.refinementPrompt;
 
-                // Render File List for both Step 1 and Step 3
                 const attachedFiles = appState.currentProject.inputs.attachedFiles || [];
-                const renderFileList = (containerId) => {
-                    const fileListEl = document.getElementById(containerId);
-                    if (!fileListEl) return;
+                const fileListEl = document.getElementById('file-list');
+                if (fileListEl) {
                     if (attachedFiles.length > 0) {
                         fileListEl.classList.remove('hidden');
                         fileListEl.innerHTML = attachedFiles.map((f, idx) => `
-                            <div class="flex items-center justify-between bg-white border border-slate-200 px-3 py-2 rounded text-sm shadow-sm">
+                            <div class="flex items-center justify-between bg-white border border-slate-200 px-3 py-2 rounded-lg text-sm shadow-sm group/item">
                                 <span class="truncate text-slate-700 font-medium flex items-center">
-                                    <i data-lucide="file" class="w-4 h-4 mr-2 text-blue-500"></i>${f.name}
+                                    <i data-lucide="file-text" class="w-4 h-4 mr-2 text-blue-500"></i>
+                                    ${f.name} <span class="ml-2 text-[10px] text-slate-400 font-normal">(${f.sizeStr || '未計算'})</span>
                                 </span>
-                                <button onclick="app.removeFile(${idx})" class="text-slate-400 hover:text-red-500 p-1 transition-colors" title="移除檔案">
-                                    <i data-lucide="x" class="w-4 h-4"></i>
+                                <button onclick="app.removeFile(${idx})" class="text-slate-300 hover:text-red-500 p-1 transition-colors bg-slate-50 hover:bg-red-50 rounded" title="移除檔案">
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                 </button>
                             </div>
                         `).join('');
@@ -630,9 +711,7 @@
                         fileListEl.classList.add('hidden');
                         fileListEl.innerHTML = '';
                     }
-                };
-                renderFileList('file-list');
-                renderFileList('file-list-refine');
+                }
 
                 // Preview Sync
                 const hasContent = !!appState.currentProject.generatedContent;
@@ -645,7 +724,7 @@
                     document.getElementById('preview-content').innerHTML = appState.currentProject.generatedContent;
                 }
 
-                // Restore Banner Logic
+                // Restore Banner
                 const isAlternateView = !!appState.originalContent;
                 const banner = document.getElementById('restore-banner');
                 if (isAlternateView) {
@@ -656,27 +735,19 @@
                     banner.classList.remove('flex');
                 }
 
-                // Button States & Feedback
+                // Buttons State
                 const genBtn = document.getElementById('btn-generate');
                 const brainBtn = document.getElementById('btn-brainstorm');
                 const refineBtn = document.getElementById('btn-refine');
                 
-                // AI Tools Buttons
-                const translateBtn = document.getElementById('btn-translate');
-                const promoBtn = document.getElementById('btn-promo');
-                const socialBtn = document.getElementById('btn-social');
-                
-                // Disable all if loading or no content
                 const toolsDisabled = appState.loading || !hasContent;
-                
-                [translateBtn, promoBtn, socialBtn].forEach(btn => {
-                    btn.disabled = toolsDisabled;
-                    const icon = btn.querySelector('i');
-                    if(icon && !btn.querySelector('.animate-spin')) icon.classList.remove('hidden');
+                ['btn-translate', 'btn-promo', 'btn-social', 'btn-export', 'btn-copy'].forEach(id => {
+                    const btn = document.getElementById(id);
+                    if(btn) btn.disabled = toolsDisabled;
                 });
 
                 genBtn.disabled = appState.loading || appState.brainstorming;
-                genBtn.querySelector('.btn-text').textContent = appState.loading ? 'AI 正在分析與撰寫中...' : 'Step 2: 生成初稿';
+                genBtn.querySelector('.btn-text').textContent = appState.loading ? 'AI 正在分析與撰寫中...' : 'Step 2: 生成專業大綱';
                 
                 brainBtn.disabled = appState.loading || appState.brainstorming;
                 brainBtn.querySelector('span').textContent = appState.brainstorming ? '發想中...' : 'AI 靈感發想';
@@ -684,16 +755,14 @@
                 refineBtn.disabled = appState.loading;
                 refineBtn.querySelector('.btn-text').textContent = appState.loading ? '專業修正中...' : 'Step 4: 執行修正';
 
-                document.getElementById('btn-export').disabled = !hasContent;
-
-                // Suggestions
+                // Suggestions Logic
                 const suggContainer = document.getElementById('suggestions-container');
                 const suggList = document.getElementById('suggestions-list');
                 if (appState.suggestedTitles.length > 0) {
                     suggContainer.classList.remove('hidden');
                     suggList.innerHTML = appState.suggestedTitles.map(title => `
                         <div onclick="app.applyTitle('${title.replace(/'/g, "\\'")}')" 
-                             class="bg-white border border-purple-200 p-2 rounded text-sm text-slate-700 cursor-pointer hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all shadow-sm">
+                             class="bg-white border border-purple-200 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 cursor-pointer hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 hover:text-white hover:border-transparent transition-all shadow-sm">
                             ${title}
                         </div>
                     `).join('');
@@ -704,12 +773,11 @@
                 lucide.createIcons();
             },
 
-            // --- File Handling Logic ---
             handleFileUpload: (event) => {
                 const files = event.target.files;
                 if (!files || files.length === 0) return;
 
-                const maxFileSize = 5 * 1024 * 1024; // 5MB Limit per file for robust inline processing
+                const maxFileSize = 5 * 1024 * 1024; 
                 let processedCount = 0;
                 const totalFiles = files.length;
 
@@ -717,84 +785,67 @@
                     processedCount++;
                     if (processedCount === totalFiles) {
                          app.updateUI();
-                         showToast(`已成功附加檔案`, "success");
+                         showToast(`成功附加 ${totalFiles} 個檔案`, "success");
                     }
                 };
 
                 Array.from(files).forEach(file => {
                     if (file.size > maxFileSize) {
-                        showToast(`檔案「${file.name}」超過 5MB，請精簡後上傳。`, "warning");
+                        showToast(`「${file.name}」超過 5MB，請精簡後上傳`, "warning");
                         checkComplete();
                         return;
                     }
 
                     const fileNameLower = file.name.toLowerCase();
+                    const sizeStr = formatBytes(file.size);
 
-                    // Handle .docx using mammoth.js to bypass inlineData restrictions
                     if (fileNameLower.endsWith('.docx')) {
                         if (typeof mammoth === 'undefined') {
-                            showToast("Word 解析套件未成功載入，請稍後再試或轉換為 PDF 上傳", "warning");
+                            showToast("DOCX 解析模組尚未載入，請稍後", "warning");
                             checkComplete();
                             return;
                         }
-
                         const reader = new FileReader();
                         reader.onload = (e) => {
                             mammoth.extractRawText({arrayBuffer: e.target.result})
                                 .then((result) => {
                                     appState.currentProject.inputs.attachedFiles.push({
-                                        name: file.name,
-                                        type: 'text/plain',
-                                        textContent: result.value // Store parsed text
+                                        name: file.name, type: 'text/plain', sizeStr, textContent: result.value 
                                     });
                                     checkComplete();
                                 })
                                 .catch(err => {
                                     console.error(err);
-                                    showToast(`Word解析失敗: ${file.name}`, "warning");
+                                    showToast(`Word 解析失敗: ${file.name}`, "warning");
                                     checkComplete();
                                 });
                         };
                         reader.readAsArrayBuffer(file);
                     
-                    // Handle .txt directly
                     } else if (file.type === 'text/plain' || fileNameLower.endsWith('.txt')) {
                         const reader = new FileReader();
                         reader.onload = (e) => {
                             appState.currentProject.inputs.attachedFiles.push({
-                                name: file.name,
-                                type: 'text/plain',
-                                textContent: e.target.result // Store parsed text
+                                name: file.name, type: 'text/plain', sizeStr, textContent: e.target.result
                             });
                             checkComplete();
                         };
                         reader.readAsText(file);
                         
-                    // Handle PDF, Image, Audio for inlineData
                     } else {
                         const reader = new FileReader();
                         reader.onload = (e) => {
                             const base64Data = e.target.result.split(',')[1];
-                            
-                            // Attempt to ensure correct MIME type for API compatibility
-                            let mimeType = file.type;
-                            if (!mimeType) {
-                                if (fileNameLower.endsWith('.pdf')) mimeType = 'application/pdf';
-                                else mimeType = 'application/octet-stream';
-                            }
-
+                            let mimeType = file.type || (fileNameLower.endsWith('.pdf') ? 'application/pdf' : 'application/octet-stream');
                             appState.currentProject.inputs.attachedFiles.push({
-                                name: file.name,
-                                type: mimeType,
-                                data: base64Data
+                                name: file.name, type: mimeType, sizeStr, data: base64Data
                             });
                             checkComplete();
                         };
                         reader.readAsDataURL(file);
                     }
                 });
-
-                event.target.value = ''; // Reset input so same file can be uploaded if deleted
+                event.target.value = ''; 
             },
 
             removeFile: (index) => {
@@ -802,9 +853,8 @@
                 app.updateUI();
             },
 
-            // --- Project Management ---
             createNewProject: (confirmAction = true) => {
-                if (confirmAction && !confirm("確定要開啟新專案嗎？目前的內容若未儲存將會遺失。")) return;
+                if (confirmAction && appState.currentProject.generatedContent && !confirm("目前的進度若未儲存將會遺失，確定要開啟新專案嗎？")) return;
 
                 appState.currentProject = {
                     id: generateId(),
@@ -813,13 +863,9 @@
                         situation: OPTIONS.situations[0], situationCustom: '',
                         audience: OPTIONS.audiences[0], audienceCustom: '',
                         duration: OPTIONS.durations[0], durationCustom: '',
-                        topic: '',
-                        backgroundSupplement: '',
-                        attachedFiles: []
+                        topic: '', backgroundSupplement: '', attachedFiles: []
                     },
-                    generatedContent: '',
-                    refinementPrompt: '',
-                    history: []
+                    generatedContent: '', refinementPrompt: '', history: []
                 };
                 appState.suggestedTitles = [];
                 appState.originalContent = null;
@@ -827,16 +873,20 @@
                 app.updateUI();
                 app.toggleHistory(false);
                 
-                if(confirmAction) showToast("已開啟新專案", "success");
+                if(confirmAction) showToast("已開啟全新空白專案", "success");
             },
 
-            saveProject: () => {
+            saveProject: async () => {
                 if (!appState.currentProject.inputs.topic) {
-                    showToast("請先輸入課程主題才能儲存", "warning");
+                    showToast("請先輸入【核心主題】才能儲存", "warning");
+                    return;
+                }
+                if (!currentUserId) {
+                    showToast("連線異常，暫時無法儲存至雲端", "warning");
                     return;
                 }
                 
-                showToast("正在儲存專案...", "info");
+                showToast("同步至雲端中...", "info");
 
                 let projectToSave = { ...appState.currentProject };
                 let isVariantSave = false;
@@ -844,50 +894,52 @@
 
                 if (appState.originalContent) {
                     isVariantSave = true;
-                    if (appState.viewMode === 'translate') suffix = " (EN)";
-                    if (appState.viewMode === 'promo') suffix = " (Promo)";
-                    if (appState.viewMode === 'social') suffix = " (Social)";
-                    
+                    if (appState.viewMode === 'translate') suffix = " (雙語版)";
+                    if (appState.viewMode === 'promo') suffix = " (宣傳版)";
+                    if (appState.viewMode === 'social') suffix = " (社群版)";
                     projectToSave.id = generateId(); 
                     projectToSave.name = (appState.currentProject.name === '未命名課程' ? appState.currentProject.inputs.topic : appState.currentProject.name) + suffix;
                 } else {
                     projectToSave.name = appState.currentProject.name === '未命名課程' ? appState.currentProject.inputs.topic : appState.currentProject.name;
-                    projectToSave.lastModified = new Date().toISOString();
-                }
-
-                const existingIndex = appState.projects.findIndex(p => p.id === projectToSave.id);
-                if (existingIndex >= 0) {
-                    appState.projects[existingIndex] = projectToSave;
-                } else {
-                    appState.projects.unshift(projectToSave);
                 }
                 
-                if (isVariantSave) {
-                    appState.currentProject.id = projectToSave.id;
-                    appState.currentProject.name = projectToSave.name;
-                } else {
-                    appState.currentProject = projectToSave;
-                }
+                projectToSave.lastModified = new Date().toISOString();
 
-                localStorage.setItem('course_projects', JSON.stringify(appState.projects));
+                // Sanitize files to prevent exceeding Firestore 1MB limits
+                const sanitizedFiles = (projectToSave.inputs.attachedFiles || []).map(f => ({
+                    name: f.name, type: f.type, sizeStr: f.sizeStr
+                }));
+
+                const dataToSave = {
+                    ...projectToSave,
+                    inputs: { ...projectToSave.inputs, attachedFiles: sanitizedFiles }
+                };
                 
-                setTimeout(() => {
-                    showToast(isVariantSave ? `已另存為${suffix}版專案！` : "專案儲存成功！", "success");
-                    app.renderHistoryList();
-                }, 500);
+                try {
+                    const docRef = doc(db, 'artifacts', APP_ID, 'users', currentUserId, 'projects', dataToSave.id);
+                    await setDoc(docRef, dataToSave); 
+                    
+                    if (isVariantSave) {
+                        appState.currentProject.id = dataToSave.id;
+                        appState.currentProject.name = dataToSave.name;
+                    } else {
+                        appState.currentProject = dataToSave;
+                    }
+                    showToast(isVariantSave ? `已另存為「${suffix}」並同步雲端！` : "專案同步成功！", "success");
+                } catch (error) {
+                    console.error("儲存失敗:", error);
+                    showToast("雲端儲存失敗，請檢查網路", "warning");
+                }
             },
 
             loadProject: (id) => {
                 const project = appState.projects.find(p => p.id === id);
                 if (project) {
-                    showToast("正在載入...", "info");
+                    showToast("載入專案中...", "info");
                     appState.currentProject = JSON.parse(JSON.stringify(project));
                     
-                    // Backward compatibility guard for older saved projects
+                    // Defaults for older formats
                     if(!appState.currentProject.inputs.backgroundSupplement) appState.currentProject.inputs.backgroundSupplement = '';
-                    if(!appState.currentProject.inputs.situationCustom) appState.currentProject.inputs.situationCustom = '';
-                    if(!appState.currentProject.inputs.audienceCustom) appState.currentProject.inputs.audienceCustom = '';
-                    if(!appState.currentProject.inputs.durationCustom) appState.currentProject.inputs.durationCustom = '';
                     if(!appState.currentProject.inputs.attachedFiles) appState.currentProject.inputs.attachedFiles = [];
                     
                     appState.suggestedTitles = [];
@@ -897,30 +949,41 @@
                     setTimeout(() => {
                         app.updateUI();
                         app.toggleHistory(false);
-                        showToast("專案載入完成", "success");
-                    }, 300);
+                        showToast("載入完成", "success");
+                    }, 200);
                 }
             },
 
-            deleteProject: (id, event) => {
+            deleteProject: async (id, event) => {
                 event.stopPropagation();
-                if (confirm('確定要刪除此專案嗎？')) {
-                    appState.projects = appState.projects.filter(p => p.id !== id);
-                    localStorage.setItem('course_projects', JSON.stringify(appState.projects));
-                    app.renderHistoryList();
-                    showToast("專案已刪除", "info");
+                if (!currentUserId) return;
+
+                if (confirm('確定要從雲端永久刪除此專案嗎？（此操作無法復原）')) {
+                    try {
+                        const docRef = doc(db, 'artifacts', APP_ID, 'users', currentUserId, 'projects', id);
+                        await deleteDoc(docRef);
+                        showToast("專案已永久刪除", "info");
+                        if(appState.currentProject.id === id) app.createNewProject(false);
+                    } catch (error) {
+                        console.error("刪除失敗:", error);
+                        showToast("刪除失敗", "warning");
+                    }
                 }
             },
 
             toggleHistory: (forceState) => {
                 const drawer = document.getElementById('history-drawer');
-                if (forceState !== undefined) {
-                    forceState ? drawer.classList.remove('hidden') : drawer.classList.add('hidden');
-                } else {
-                    drawer.classList.toggle('hidden');
-                }
-                if (!drawer.classList.contains('hidden')) {
+                const panel = document.getElementById('history-panel');
+                
+                const show = forceState !== undefined ? forceState : drawer.classList.contains('opacity-0');
+                
+                if (show) {
+                    drawer.classList.remove('opacity-0', 'pointer-events-none');
+                    panel.classList.remove('translate-x-full');
                     app.renderHistoryList();
+                } else {
+                    drawer.classList.add('opacity-0', 'pointer-events-none');
+                    panel.classList.add('translate-x-full');
                 }
             },
 
@@ -930,21 +993,27 @@
                 
                 if (appState.projects.length === 0) {
                     list.innerHTML = '';
+                    list.classList.add('hidden');
                     empty.classList.remove('hidden');
+                    empty.classList.add('flex');
                     return;
                 }
 
                 empty.classList.add('hidden');
+                empty.classList.remove('flex');
+                list.classList.remove('hidden');
+                
                 list.innerHTML = appState.projects.map(p => `
-                    <div onclick="app.loadProject('${p.id}')" class="p-4 border rounded-lg hover:bg-slate-50 cursor-pointer group relative transition-all shadow-sm hover:shadow-md bg-white">
-                        <h4 class="font-bold text-slate-800 mb-1">${p.name}</h4>
-                        <div class="flex items-center text-xs text-slate-500 mt-1 space-x-2">
-                            <span class="bg-slate-100 px-1.5 py-0.5 rounded">${p.inputs.situation === '其他 (請自行輸入)' ? p.inputs.situationCustom || '自訂' : p.inputs.situation}</span>
-                            <span>·</span>
-                            <span>${p.inputs.duration === '其他 (請自行輸入)' ? p.inputs.durationCustom || '自訂' : p.inputs.duration}</span>
+                    <div onclick="app.loadProject('${p.id}')" class="p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-300 hover:shadow-md cursor-pointer group relative transition-all duration-200">
+                        <h4 class="font-bold text-slate-800 mb-1.5 pr-8 truncate">${p.name}</h4>
+                        <div class="flex flex-wrap items-center text-[10px] text-slate-500 gap-1.5">
+                            <span class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">${p.inputs.situation === '其他 (請自行輸入)' ? p.inputs.situationCustom || '自訂' : p.inputs.situation}</span>
+                            <span class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">${p.inputs.duration === '其他 (請自行輸入)' ? p.inputs.durationCustom || '自訂' : p.inputs.duration}</span>
                         </div>
-                        <p class="text-xs text-slate-400 mt-2">最後修改: ${new Date(p.lastModified || Date.now()).toLocaleDateString()}</p>
-                        <button onclick="app.deleteProject('${p.id}', event)" class="absolute top-4 right-4 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-red-50 rounded-full">
+                        <p class="text-[10px] text-slate-400 mt-2 flex items-center">
+                            <i data-lucide="clock" class="w-3 h-3 mr-1"></i> ${new Date(p.lastModified || Date.now()).toLocaleDateString()}
+                        </p>
+                        <button onclick="app.deleteProject('${p.id}', event)" class="absolute top-3 right-3 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-red-50 rounded-lg">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -956,7 +1025,7 @@
                 appState.currentProject.inputs.topic = title;
                 appState.suggestedTitles = [];
                 app.updateUI();
-                showToast("已套用標題", "success");
+                showToast("已套用選定的標題", "success");
             },
 
             restoreOriginal: () => {
@@ -965,15 +1034,30 @@
                     appState.originalContent = null;
                     appState.viewMode = 'original';
                     app.updateUI();
-                    showToast("已還原回完整大綱", "success");
+                    showToast("已還原原始大綱", "success");
                 }
+            },
+
+            copyContent: () => {
+                const content = appState.currentProject.generatedContent;
+                if (!content) return;
+                
+                // 建立暫存的 div 來提取純文字，去除 HTML 標籤但保留換行
+                const tempDiv = document.createElement("div");
+                tempDiv.innerHTML = content.replace(/<\/p>|<br>/gi, '\n').replace(/<\/li>/gi, '\n').replace(/<\/h[1-6]>/gi, '\n\n');
+                const plainText = tempDiv.textContent || tempDiv.innerText || "";
+                
+                navigator.clipboard.writeText(plainText.trim()).then(() => {
+                    showToast("已複製大綱純文字至剪貼簿", "success");
+                }).catch(err => {
+                    console.error('Copy failed', err);
+                    showToast("複製失敗，請手動圈選複製", "warning");
+                });
             },
 
             exportToWord: () => {
                 const htmlContent = appState.currentProject.generatedContent;
                 if (!htmlContent) return;
-                
-                showToast("準備匯出 Word 檔...", "info");
                 
                 const filename = appState.currentProject.name || 'course_outline';
                 const header = `
@@ -983,7 +1067,6 @@
                     <head><meta charset='utf-8'><title>${filename}</title>
                     <style>
                     body { font-family: 'Microsoft JhengHei', 'Calibri', sans-serif; line-height: 1.6; color: #333; font-size: 12pt; }
-                    /* 調整 Word 標題格式為黑字，取消藍底 */
                     h1 { font-size: 26pt; color: #000000; border-bottom: 4px solid #334155; padding-bottom: 15px; margin-top: 30px; margin-bottom: 30px; text-align: center; font-weight: 900; }
                     h2 { font-size: 18pt; color: #fff; background-color: #334155; padding: 10px 15px; margin-top: 40px; margin-bottom: 20px; font-weight: bold; border-left: 12px solid #1e293b; page-break-after: avoid; }
                     h3 { font-size: 14pt; color: #0f172a; margin-top: 25px; margin-bottom: 12px; font-weight: bold; border-bottom: 2px solid #cbd5e1; display: inline-block; padding-bottom: 5px; }
@@ -993,14 +1076,12 @@
                     b, strong { color: #1d4ed8; font-weight: 800; background-color: #eff6ff; padding: 0 4px; border-radius: 2px; } 
                     blockquote { border-left: 6px solid #3b82f6; background-color: #f8fafc; padding: 20px; margin: 30px 0; font-style: italic; color: #475569; font-size: 11pt; }
                     table { border-collapse: collapse; width: 100%; margin: 25px 0; font-size: 11pt; border: 2px solid #64748b; page-break-inside: avoid; }
-                    th { border: 1px solid #94a3b8; background-color: #e2e8f0; color: #334155; padding: 12px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; }
+                    th { border: 1px solid #94a3b8; background-color: #e2e8f0; color: #334155; padding: 12px; font-weight: bold; text-align: center; }
                     td { border: 1px solid #cbd5e1; padding: 10px 15px; vertical-align: top; }
-                    tr:nth-child(even) { background-color: #f1f5f9; }
                     </style>
                     </head><body>
                 `;
-                const footer = "</body></html>";
-                const sourceHTML = header + htmlContent + footer;
+                const sourceHTML = header + htmlContent + "</body></html>";
                 const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
                 const fileDownload = document.createElement("a");
                 document.body.appendChild(fileDownload);
@@ -1009,163 +1090,107 @@
                 fileDownload.click();
                 document.body.removeChild(fileDownload);
                 
-                showToast("下載開始", "success");
+                showToast("DOCX 檔案下載中...", "success");
             },
 
-            // --- Gemini API Logic ---
             callGeminiAPI: async (mode = 'initial') => {
                 if (!appState.apiKey) {
-                    showToast("請先輸入 API Key", "warning");
+                    showToast("需先填寫 API Key 才能呼叫 AI", "warning");
+                    document.getElementById('api-key-input').focus();
                     return;
                 }
-
                 if (mode === 'brainstorm' && !appState.currentProject.inputs.topic) {
-                    showToast("請先輸入關鍵字", "warning");
+                    showToast("發想前請先輸入一些關鍵字", "warning");
                     return;
                 }
-
                 if (mode === 'initial' && !appState.currentProject.inputs.topic) {
-                    showToast("請輸入課程主題", "warning");
+                    showToast("必須填寫「核心主題」才能生成", "warning");
                     return;
                 }
 
-                // Resolve Actual Input Values (Select vs Custom)
-                const resolveInput = (field) => {
-                    return appState.currentProject.inputs[field] === '其他 (請自行輸入)' 
-                        ? (appState.currentProject.inputs[`${field}Custom`] || '未指定') 
-                        : appState.currentProject.inputs[field];
-                };
+                const resolveInput = (field) => appState.currentProject.inputs[field] === '其他 (請自行輸入)' ? (appState.currentProject.inputs[`${field}Custom`] || '未指定') : appState.currentProject.inputs[field];
                 
-                const actualSituation = resolveInput('situation');
-                const actualAudience = resolveInput('audience');
-                const actualDuration = resolveInput('duration');
-
-                // UI Feedback
                 appState.loading = true;
                 if (mode === 'brainstorm') {
                     appState.brainstorming = true;
-                    showToast("AI 正在發想靈感...", "info");
-                } else if (mode === 'translate') {
-                    showToast("正在翻譯成英文...", "info");
-                } else if (mode === 'promo') {
-                    showToast("正在生成宣傳精簡版...", "info");
-                } else if (mode === 'social') {
-                    showToast("正在撰寫社群貼文...", "info");
-                } else if (mode === 'refine') {
-                    showToast("正在修正內容...", "info");
+                    showToast("AI 大腦運轉中，為您發想標題...", "info");
                 } else {
-                    showToast("AI 正在分析與撰寫大綱...", "info");
+                    const msgs = { translate: "雙語翻譯中...", promo: "轉換為宣傳文案...", social: "撰寫社群貼文中...", refine: "依據指示修正中..." };
+                    showToast(msgs[mode] || "AI 專家正在為您編寫大綱...", "info");
                 }
                 app.updateUI();
 
-                // Logic Preparation
                 let systemInstruction = "";
                 let userPrompt = "";
 
-                // Save original before switching views
                 if (['translate', 'promo', 'social'].includes(mode)) {
-                    if (!appState.originalContent) {
-                        appState.originalContent = appState.currentProject.generatedContent;
-                    }
+                    if (!appState.originalContent) appState.originalContent = appState.currentProject.generatedContent;
                     appState.viewMode = mode;
                 }
 
                 if (mode === 'brainstorm') {
-                    systemInstruction = `你是一位頂尖的行銷文案大師與課程設計顧問。你的專長是將平淡無奇的主題轉化為「高點擊、高價值、針對性強」的課程標題。
-                    請根據使用者提供的「關鍵字」、「目標對象」與「情境」，發想 6 個不同切入點的專業課程標題。請直接輸出這 6 個標題，每行一個，不要有編號。`;
-                    userPrompt = `[關鍵字]：${appState.currentProject.inputs.topic}\n[情境]：${actualSituation}\n[對象]：${actualAudience}\n請給我 6 個超吸睛的課程標題建議。`;
-                
+                    systemInstruction = `你是一位頂尖的行銷文案大師與課程設計顧問。你的專長是將平淡無奇的主題轉化為「高點擊、高價值、針對性強」的課程標題。請發想 6 個不同切入點的標題，直接輸出，每行一個，不要有編號。`;
+                    userPrompt = `[關鍵字]：${appState.currentProject.inputs.topic}\n[情境]：${resolveInput('situation')}\n[對象]：${resolveInput('audience')}\n請給我 6 個吸睛課程標題。`;
                 } else if (mode === 'translate') {
-                    systemInstruction = `你是一位專業的雙語翻譯專家，專精於商務與教育領域。請將使用者提供的 HTML 課程大綱內容，翻譯成【專業商用英文 (Professional Business English)】。
-                    【重要規則】1. 嚴格保留所有 HTML 標籤與結構。2. 僅翻譯文字內容。3. 專有名詞請使用標準英文術語。`;
-                    userPrompt = `請將以下 HTML 內容翻譯成英文：\n${appState.currentProject.generatedContent}`;
-                
+                    systemInstruction = `你是專業的商務翻譯專家。請將提供的 HTML 課程大綱翻譯成【Professional Business English】。必須完全保留 HTML 標籤，僅翻譯文字。`;
+                    userPrompt = `翻譯此 HTML:\n${appState.currentProject.generatedContent}`;
                 } else if (mode === 'promo') {
-                    systemInstruction = `你是一位專業的行銷企劃總監 (TONY 老師的 AI 助手)。請根據使用者目前的 HTML 課程大綱，提煉出一份【高轉換率的課程招生宣傳文案 (Brochure/Landing Page Content)】。
-                    【結構要求】請使用 HTML 格式輸出：1. <h1>：主標題。2. <p>：課程簡介。3. <ul>：適合對象。4. <ul>：預期效益。5. <blockquote>：CTA。`;
-                    userPrompt = `請將以下 HTML 課程大綱，改寫為「宣傳精簡版」：\n${appState.currentProject.generatedContent || appState.originalContent}`;
-                
+                    systemInstruction = `你是行銷企劃。請根據 HTML 大綱，提煉出【高轉換率招生宣傳文案 (Brochure)】。使用 HTML 輸出：<h1>標題, <p>簡介, <ul>適合對象/效益, <blockquote>CTA。`;
+                    userPrompt = `改寫為宣傳版:\n${appState.currentProject.generatedContent || appState.originalContent}`;
                 } else if (mode === 'social') {
-                    systemInstruction = `你是一位社群行銷大神。請根據使用者目前的 HTML 課程大綱，撰寫一篇適合 Facebook 或 LinkedIn 的【高互動社群貼文】。
-                    【結構要求】使用 HTML 格式：1. <p>：Hook (使用 Emoji)。2. <p>：痛點故事。3. <p>：課程價值。4. <p>：報名 CTA。5. <p>：Hashtags。`;
-                    userPrompt = `請將以下 HTML 課程大綱，改寫為「社群貼文版」：\n${appState.currentProject.generatedContent || appState.originalContent}`;
-
+                    systemInstruction = `你是社群大神。根據 HTML 大綱寫一篇【FB/LinkedIn 高互動貼文】。使用 HTML 輸出：<p>Hook, <p>痛點, <p>價值, <p>CTA, <p>Hashtags。`;
+                    userPrompt = `改寫為社群版:\n${appState.currentProject.generatedContent || appState.originalContent}`;
                 } else {
-                    // Initial or Refine
-                    systemInstruction = `你是一位資深的企業顧問講師 (TONY 楊文澤)。請根據使用者的課程情境及附加檔案參考，產出【極度專業】、【格式嚴謹】的 HTML 課程大綱。
-                    【核心原則】使用 <h1> <h2> <table> <strong> 等標籤，結構嚴謹，內容專業。`;
-                    
+                    systemInstruction = `你是一位資深的企業顧問講師 (TONY)。請根據情境與附件產出【極度專業】、【格式嚴謹】的 HTML 課程大綱。使用 <h1> <h2> <table> <strong> 等標籤。`;
                     if (mode === 'initial') {
-                        userPrompt = `[情境]：${actualSituation}\n[對象]：${actualAudience}\n[時長]：${actualDuration}\n[主題]：${appState.currentProject.inputs.topic}\n[補充說明]：${appState.currentProject.inputs.backgroundSupplement || "無"}\n\n請綜合上述情境與我提供的參考檔案（若有的話），生成 HTML 課程大綱。`;
+                        userPrompt = `[情境]：${resolveInput('situation')}\n[對象]：${resolveInput('audience')}\n[時長]：${resolveInput('duration')}\n[主題]：${appState.currentProject.inputs.topic}\n[補充]：${appState.currentProject.inputs.backgroundSupplement || "無"}\n生成 HTML 課程大綱。`;
                     } else if (mode === 'refine') {
-                        userPrompt = `這是前一輪生成的 HTML 內容：\n${appState.currentProject.generatedContent}\n【修正要求】：\n${appState.currentProject.refinementPrompt}\n請參考附加檔案(若有的話)修正並重新輸出完整 HTML。`;
+                        userPrompt = `前版 HTML：\n${appState.currentProject.generatedContent}\n【修正要求】：\n${appState.currentProject.refinementPrompt}\n請重新輸出修正後的完整 HTML。`;
                     }
                 }
 
-                // Construct Request Payload
-                const requestParts = [];
-                
-                // 1. Text Prompt
-                requestParts.push({ text: userPrompt });
-
-                // 2. Attached Files 
+                const requestParts = [{ text: userPrompt }];
                 if (['initial', 'refine', 'brainstorm'].includes(mode) && appState.currentProject.inputs.attachedFiles.length > 0) {
                     appState.currentProject.inputs.attachedFiles.forEach(file => {
-                        if (file.textContent) {
-                            // Send extracted text directly as a text part (sidesteps inlineData MIME type limits)
-                            requestParts.push({ text: `\n\n--- 附件資料: ${file.name} ---\n${file.textContent}\n--- 附件結束 ---` });
-                        } else if (file.data) {
-                            // Send binary data (PDF, Images, Audio) via inlineData
-                            requestParts.push({
-                                inlineData: {
-                                    mimeType: file.type,
-                                    data: file.data
-                                }
-                            });
-                        }
+                        if (file.textContent) requestParts.push({ text: `\n\n--- 附件: ${file.name} ---\n${file.textContent}\n--- 結束 ---` });
+                        else if (file.data) requestParts.push({ inlineData: { mimeType: file.type, data: file.data } });
                     });
                 }
 
                 try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${appState.apiKey}`, {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${appState.apiKey}`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             contents: [{ parts: requestParts }],
                             systemInstruction: { parts: [{ text: systemInstruction }] },
-                            generationConfig: { 
-                                maxOutputTokens: 8192, // 完全釋放輸出長度限制
-                                temperature: 0.7 
-                            }
+                            generationConfig: { maxOutputTokens: 8192, temperature: 0.7 }
                         })
                     });
 
                     const data = await response.json();
-                    
                     if (data.error) throw new Error(data.error.message);
 
-                    let generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || "生成失敗";
+                    let generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
                     
                     if (mode === 'brainstorm') {
-                        const lines = generatedText.split('\n').filter(line => line.trim().length > 0).map(line => line.replace(/^[\d-.\s]+/, '').trim());
-                        appState.suggestedTitles = lines;
+                        appState.suggestedTitles = generatedText.split('\n').filter(l => l.trim().length > 0).map(l => l.replace(/^[\d-.\s]+|\*|"/g, '').trim());
                         showToast("靈感發想完成！", "success");
                     } else {
-                        generatedText = generatedText.replace(/^```html/i, '').replace(/^```/i, '').replace(/```$/i, '');
-                        appState.currentProject.generatedContent = generatedText;
+                        appState.currentProject.generatedContent = generatedText.replace(/^```html/i, '').replace(/^```/i, '').replace(/```$/i, '');
                         if (mode === 'refine') appState.currentProject.refinementPrompt = '';
                         appState.currentProject.history.push({ date: new Date(), type: mode });
                         
-                        let finishMsg = "生成完成！";
-                        if (mode === 'promo') finishMsg = "宣傳文案生成完畢！";
-                        if (mode === 'social') finishMsg = "社群貼文生成完畢！";
-                        if (mode === 'translate') finishMsg = "翻譯完成！";
+                        showToast("內容生成完畢！", "success");
                         
-                        showToast(finishMsg, "success");
+                        // Scroll to top of preview
+                        setTimeout(() => {
+                            const previewContainer = document.getElementById('preview-container');
+                            if(previewContainer) previewContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                        }, 100);
                     }
-
                 } catch (err) {
-                    showToast(`錯誤: ${err.message}`, "warning");
+                    showToast(`產生失敗: 請確認 API Key 正確或重試`, "warning");
                     console.error(err);
                 } finally {
                     appState.loading = false;
@@ -1175,6 +1200,7 @@
             }
         };
 
+        window.app = app;
         window.addEventListener('DOMContentLoaded', app.init);
     </script>
 </body>
